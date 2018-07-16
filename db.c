@@ -288,6 +288,11 @@ int main(int argc, char *argv[]) {
 		case Q_ADD:;
 			struct dbitem item = make_item(qval);
 			char *fn = m_strjoin("/", args.dir, item.key);
+			if (item_read(fn, &item) == E_OK) {
+				printf("DB entry \"%s\" is already exist\n", fn);
+				free(fn);
+				err_exit(args.isquiet, lerr);
+			}
 			if ((lerr = item_write(fn, &item)) != E_OK) {
 				free(fn);
 				err_exit(args.isquiet, lerr);
